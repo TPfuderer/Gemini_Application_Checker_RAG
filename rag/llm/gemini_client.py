@@ -1,0 +1,50 @@
+"""
+Gemini LLM client using the official google-genai SDK (future-proof).
+
+Design:
+- Uses the unified GenAI Client (text, multimodal, tools-ready).
+- Gemini is used ONLY for generation (RAG stays model-agnostic).
+- Low temperature for stable, non-hallucinated answers.
+"""
+
+import os
+from google import genai
+from rag.prompts import SYSTEM_PROMPT
+
+
+def get_client():
+    """
+    Initialize and return a Gemini client.
+    """
+    api_key = os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        raise RuntimeError(
+            "GOOGLE_API_KEY (or GEMINI_API_KEY) environment variable not set."
+        )
+
+    client = genai.Client(api_key=api_key)
+    return client
+
+
+def generate_answer(client, context: str, question: str) -> str:
+    prompt = f"""
+{SYSTEM_PROMPT}
+
+Context:
+{context}
+
+Question:
+{question}
+"""
+
+    response = client.models.generate_content(
+        model="models/gemma-3-4b-it",
+        contents=prompt,
+        config={
+            "temperature": 0.1,
+            "max_output_tokens": 512,
+        },
+    )
+
+    return response.text.strip()
+
