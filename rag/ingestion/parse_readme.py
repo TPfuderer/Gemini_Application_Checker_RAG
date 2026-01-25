@@ -43,6 +43,18 @@ def parse_markdown_readme(readme_path: Path, project_name: str):
             "source": "README.md"
         })
 
+    # Add folder tree as a first-class RAG chunk
+    try:
+        folder_tree = build_folder_tree(readme_path.parent)
+        chunks.append({
+            "text": folder_tree,
+            "project": project_name,
+            "section_title": "Folder Structure",
+            "source": "folder_tree"
+        })
+    except Exception:
+        pass
+
     return chunks
 
 def build_folder_tree(root_path, max_depth=4):

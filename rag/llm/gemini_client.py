@@ -26,7 +26,13 @@ def get_client():
     return client
 
 
-def generate_answer(client, context: str, question: str) -> str:
+from google.genai.errors import ClientError
+
+PRIMARY_MODEL = "models/gemma-3-4b-it"
+FALLBACK_MODEL = "models/gemini-2.5-flash-lite"
+
+
+def generate_answer(client, context: str, question: str):
     prompt = f"""
 {SYSTEM_PROMPT}
 
@@ -37,14 +43,27 @@ Question:
 {question}
 """
 
-    response = client.models.generate_content(
-        model="models/gemma-3-4b-it",
-        contents=prompt,
-        config={
-            "temperature": 0.1,
-            "max_output_tokens": 512,
-        },
-    )
+    try:
+        response = client.models.generate_content(
+            model=PRIMARY_MODEL,
+            contents=prompt,
+            config={
+                "temperature": 0.1,
+                "max_output_tokens": 512,
+            },
+        )
+        return response.text.strip(), PRIMARY_MODEL
 
-    return response.text.strip()
+    except ClientError:
+        # Fallback on quota / availability issues
+        response = client.models.generate_content(
+            model=FALLBACK_MODEL,
+            contents=prompt,
+            config={
+                "temperature": 0.2,
+                "max_output_tokens": 512,
+            },
+        )
+        return response.text.strip(), FALLBACK_MODEL
+
 

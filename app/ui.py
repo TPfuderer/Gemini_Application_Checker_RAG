@@ -29,23 +29,31 @@ and explicitly reference their source.
 # -------------------------------------------------
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
+from config import PROJECTS as PROJECT_CONFIG
+
 PROJECTS = {
-    "ML Classifier": PROJECT_ROOT / "rag" / "indexes" / "ml_classifier",
-    "OCR Pipeline": PROJECT_ROOT / "rag" / "indexes" / "ocr_pipeline",
+    name: cfg["index_path"]
+    for name, cfg in PROJECT_CONFIG.items()
 }
+
+PROJECT_OPTIONS = ["All Projects"] + list(PROJECTS.keys())
+
 
 # -------------------------------------------------
 # UI controls
 # -------------------------------------------------
 project_name = st.selectbox(
-    "Select project",
-    options=list(PROJECTS.keys()),
+    "Select project context",
+    options=PROJECT_OPTIONS,
 )
 
-question = st.text_input(
+
+question = st.text_area(
     "Ask a question about this project",
-    placeholder="How does this project work?",
+    placeholder="Does this candidate fit the role?",
+    height=120,
 )
+
 
 # -------------------------------------------------
 # Core logic
@@ -54,12 +62,19 @@ if st.button("Ask") and question:
     with st.spinner("Retrieving and reasoning..."):
         embedder = SentenceTransformer("all-MiniLM-L6-v2")
 
-        retriever = Retriever(
-            index_dir=PROJECTS[project_name],
-            embedder=embedder,
-        )
+        docs = []
 
-        docs = retriever.retrieve(question, top_k=5)
+        if project_name == "All Projects":
+            for index_dir in PROJECTS.values():
+                retriever = Retriever(index_dir=index_dir, embedder=embedder)
+                docs.extend(retriever.retrieve(question, top_k=3))
+        else:
+            retriever = Retriever(
+                index_dir=PROJECTS[project_name],
+                embedder=embedder,
+            )
+            docs = retriever.retrieve(question, top_k=5)
+
         context = build_context(docs)
 
         client = get_client()
@@ -69,8 +84,8 @@ if st.button("Ask") and question:
             question=question,
         )
 
-    st.subheader("Answer")
-    st.write(answer)
+        st.subheader("Answer")
+        st.write(answer)
 
     with st.expander("Sources used"):
         st.code(context)

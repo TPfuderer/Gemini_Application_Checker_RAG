@@ -26,8 +26,9 @@ from sentence_transformers import SentenceTransformer
 
 from rag.ingestion.parse_readme import parse_markdown_readme
 from config import PROJECTS, EMBEDDING_MODEL
-from rag.ingestion.load_repo import iter_source_files
-from rag.ingestion.parse_code import extract_functions
+from rag.ingestion.parse_readme import parse_markdown_readme
+from config import PROJECTS, EMBEDDING_MODEL
+
 
 
 def _ensure_dir(path: Path) -> None:
@@ -49,39 +50,20 @@ def build_index_for_project(
 
     docs: List[Dict] = []
 
-    # --- README ingestion (section-level + folder tree) ---
-    readme_path = repo_path / "README.md"
-
-    if readme_path.exists():
-        readme_chunks = parse_markdown_readme(
-            readme_path=readme_path,
-            project_name=project_name
-        )
-        docs.extend(readme_chunks)
-
     if not repo_path.exists():
         print(f"[WARN] {project_name}: repo_path does not exist: {repo_path}")
     else:
-        # Iterate through .py/.md files according to ingestion rules
-        for path in iter_source_files(repo_path):
-            text = path.read_text(encoding="utf-8", errors="ignore")
+        readme_path = repo_path / "README.md"
 
-            # Python source files -> function chunks
-            if path.suffix == ".py":
-                lines = text.splitlines()
-                for fdef in extract_functions(text):
-                    snippet = "\n".join(lines[fdef["start_line"]:fdef["end_line"]]).strip()
-                    if not snippet:
-                        continue
-                    docs.append({
-                        "text": snippet,
-                        "project": project_name,
-                        "source": f"{path.name}::{fdef['name']}",
-                        "type": "function",
-                        "file": str(path),
-                        "symbol": fdef["name"],
-                    })
-
+        if not readme_path.exists():
+            print(f"[WARN] {project_name}: README.md not found")
+        else:
+            docs.extend(
+                parse_markdown_readme(
+                    readme_path=readme_path,
+                    project_name=project_name,
+                )
+            )
 
     # Always write docs JSON (even if empty) so downstream never fails
     docs_path = index_dir / "rag_docs.json"
