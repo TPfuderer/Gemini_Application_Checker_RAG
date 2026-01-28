@@ -16,7 +16,8 @@ from rag.llm.gemini_client import get_client, generate_answer
 from rag.prompts import SYSTEM_PROMPT_ALL, SYSTEM_PROMPT_PROJECT
 from config import PROJECTS as PROJECT_CONFIG
 from sentence_transformers import util
-from config import PROJECT_ROUTING
+import config
+PROJECT_ROUTING = config.PROJECT_ROUTING
 
 
 
