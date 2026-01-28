@@ -1,0 +1,44 @@
+[
+  {
+    "text": "Master’s student in **Survey Statistics and Data Analysis** with a strong focus on applied data science and machine learning.  \nExperienced in building end-to-end data pipelines, lightweight ML models, and Streamlit applications.  \nBackground combines statistical methodology with practical engineering-oriented projects.  \nSeeking a **mandatory internship or working student position (360–540 hours)** in data science / ML.\n\n---",
+    "project": "Candidate Profile",
+    "section_title": "1. Short Profile Summary",
+    "source": "README.md"
+  },
+  {
+    "text": "### Proficient\n- Python\n- R\n- LaTeX\n- MS Office (Excel, PowerPoint, Word)\n\n### Applied / Exploratory (≈30h+ hands-on)\n- Git (version control, GitHub workflows)\n- Streamlit (data apps, ML demos)\n- Web scraping (Playwright)\n- OCR pipelines (YOLOv8, EasyOCR)\n- OpenAI API usage\n- Basic SQL (querying, joins)\n- Docker (basics)\n- AWS (basics)\n- App development (frontend & backend concepts)\n- Next.js (touchpoints / exploration)\n\n---",
+    "project": "Candidate Profile",
+    "section_title": "2. Core Technical Skills",
+    "source": "README.md"
+  },
+  {
+    "text": "### Working Student — Data Analysis  \n**GfK (now YouGov), Nürnberg** | 2022–2023\n\n- Continued responsibilities from prior internship\n- Supported data preparation and analysis for ongoing customer projects\n- Worked with large retail and consumer panel datasets\n- Contributed to recurring analytics and reporting workflows\n\n---\n\n### Intern — Data Analysis  \n**GfK, Nürnberg** | Summer 2022\n\n- Cleaned and validated large-scale retail and consumer panel data (Excel-based workflows)\n- Supported internal reporting and analytics systems\n- Conducted exploratory analyses for customer-facing studies\n- Prepared datasets for surveys and client projects\n- Received positive supervisor feedback for reliability and data quality\n\n---",
+    "project": "Candidate Profile",
+    "section_title": "3. Professional Experience",
+    "source": "README.md"
+  },
+  {
+    "text": "### Supermarket Offer Aggregation App\n- Automated web scraping pipeline using Playwright\n- Structured and normalized supermarket offer data\n- Streamlit app for interactive product exploration  \n**Demo:** https://clevershopper.streamlit.app/\n\n---\n\n### Product Categorization Demo\n- Lightweight ML pipeline using TF-IDF and Logistic Regression\n- Training data generated via GPT-assisted labeling\n- Deployed as a Streamlit demo  \n**Demo:** https://mlcategoryclassifier.streamlit.app/\n\n---\n\n### Statistical Modeling in R (Fay–Herriot Models)\n- Implemented small area estimation models in R\n- Focus on statistical methodology and reproducibility\n- Documented via LaTeX presentation\n\n---\n\n### Python Learning & Spaced Repetition App\n- Streamlit-based learning application\n- User progress tracking via Supabase (SQL backend)\n- Used by fellow students during coursework  \n**Demo:** https://activerecallapp-x9tovxwcvhtr5gszc3lywp.streamlit.app/\n\n---\n\n### Supermarket Flyer OCR Pipeline\n- OCR pipeline for supermarket flyers\n- Product detection using YOLOv8\n- Text extraction using EasyOCR  \n**Demo:** https://portfoliobasedemo-p.streamlit.app/\n\n---\n\n### Code Repository\n- Source code and documentation available on GitHub  \n**GitHub:** https://github.com/TPfuderer  \n*Note: Demo apps run on free-tier infrastructure and may require short startup time.*\n\n---",
+    "project": "Candidate Profile",
+    "section_title": "4. Academic & Personal Projects (Selected)",
+    "source": "README.md"
+  },
+  {
+    "text": "### M.Sc. Survey Statistics and Data Analysis  \n**Otto-Friedrich University of Bamberg** | Expected 2026\n\n**Completed coursework**\n- Advanced Statistics\n- Advanced Small Area Estimation\n- Advanced Data Analysis with R\n- Statistical Machine Learning\n- Bayesian Statistics\n- Advanced Econometrics\n\n**Current coursework**\n- Mathematics of Statistical Learning\n- Statistics with Python\n- Missing Data Imputation\n\n---\n\n### B.A. Political & Administrative Science  \n**University of Konstanz** | 2020–2024\n\n- Bachelor thesis: Empirical data analysis in R\n- Relevant coursework: Data Analysis with R, Statistics I, quantitative methods seminars\n- Study abroad: Data Analysis with Excel (UK)\n\n---",
+    "project": "Candidate Profile",
+    "section_title": "5. Education",
+    "source": "README.md"
+  },
+  {
+    "text": "- Applied machine learning with classical and modern tools\n- Strong statistical foundation paired with practical engineering\n- End-to-end project ownership (data → model → app)\n- Ability to communicate technical systems clearly\n- Fit for data science, ML engineering, and applied analytics roles",
+    "project": "Candidate Profile",
+    "section_title": "6. What This Profile Demonstrates",
+    "source": "README.md"
+  },
+  {
+    "text": "candidate_profile\n└── README.md",
+    "project": "Candidate Profile",
+    "section_title": "Folder Structure",
+    "source": "folder_tree"
+  }
+]

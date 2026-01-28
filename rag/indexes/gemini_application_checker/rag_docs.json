@@ -1,0 +1,38 @@
+[
+  {
+    "text": "Gemini_Application_Checker_RAG is a Retrieval-Augmented Generation (RAG) application that inspects software project repositories to help reviewers quickly understand a candidate’s work and technical depth. It ingests project README files, builds a searchable knowledge base, and answers questions with grounded, cited responses. This solves the “project inspection” problem for recruiters and engineers by turning scattered repository documentation into a reliable, queryable evaluation surface. The system implements RAG by retrieving relevant README snippets and using them to generate concise, evidence-backed answers. Outputs are structured responses that include citations pointing to the exact README chunks used.",
+    "project": "Gemini Application Checker",
+    "section_title": "1. Short Project Summary",
+    "source": "README.md"
+  },
+  {
+    "text": "### Ingestion (README-first)\nThe ingestion pipeline treats README files as the primary knowledge objects. This prioritization is deliberate: READMEs encode author-intent, high-level architecture, and usage details that are most useful for evaluation, while raw source code is verbose and context-heavy. By focusing on READMEs, the system captures the most recruiter-relevant signal with lower indexing cost and clearer grounding.\n\n### Chunking Strategy\nREADME content is split into semantically meaningful sections (e.g., headings and paragraph blocks). Each chunk is stored with metadata such as project name, file path, and section title. This provides context for retrieval and enables precise citations in the final response.\n\n### Embeddings\nEach chunk is converted into a vector representation using a local embedding model. Local embeddings keep costs predictable, remove dependency on external APIs, and allow reproducible indexing. Embeddings are generated once per corpus update and cached for reuse.\n\n### Indexing & Retrieval (FAISS)\nAll embeddings are stored in a FAISS index for fast similarity search. When a user asks a question, the query is embedded with the same model and used to retrieve the top-k most similar chunks. This yields grounded context for the generator.\n\n### Prompt Construction & Grounding\nRetrieved chunks are inserted into a prompt template that instructs the LLM to answer only using the provided context. The prompt explicitly demands grounded responses and disallows unsupported claims.\n\n### Citations Enforcement\nCitations are enforced by attaching chunk identifiers to each retrieved passage and requiring the model to reference those identifiers in its output. This ensures traceability back to the original README text and reduces hallucination risk.",
+    "project": "Gemini Application Checker",
+    "section_title": "2. Technical Overview",
+    "source": "README.md"
+  },
+  {
+    "text": "```\nGemini_Application_Checker_RAG/\n├── app/                 # UI layer for querying the RAG system\n├── rag/                 # Core RAG logic\n│   ├── ingestion/       # README ingestion and chunking\n│   ├── indexing/        # Embedding + FAISS index build\n│   ├── retrieval/       # Query embedding + top-k retrieval\n│   └── prompting/       # Prompt templates + grounding rules\n├── projects/            # Project README corpus to index\n├── build_index.py       # Orchestrates ingestion + indexing\n├── config.py            # Central configuration (models, paths)\n└── requirements.txt     # Dependencies\n```\n\n**Ingestion:** `rag/ingestion/` reads README files from `projects/`, parses headings/sections, and emits chunk objects with metadata.\n\n**Indexing:** `rag/indexing/` embeds chunks and stores them in a FAISS index; `build_index.py` orchestrates the process.\n\n**Retrieval:** `rag/retrieval/` embeds the query and fetches the top-k chunks from FAISS.\n\n**Prompting:** `rag/prompting/` builds a grounded prompt that includes retrieved chunks and citation rules.\n\n**UI:** `app/` exposes an interface for asking questions and receiving cited answers.",
+    "project": "Gemini Application Checker",
+    "section_title": "3. Folder Structure (Core Section)",
+    "source": "README.md"
+  },
+  {
+    "text": "- **Why FAISS?** It is a fast, mature vector index with excellent performance for approximate nearest-neighbor search and integrates easily with Python pipelines.\n- **Why local embeddings?** Local embedding models reduce cost, avoid API dependency, and allow repeatable evaluation of candidate projects.\n- **Why modular separation?** Ingestion, indexing, retrieval, and prompting are isolated for easy replacement or extension (e.g., swapping embedding models, adding new chunkers, or changing prompt constraints).\n- **Limitations:**\n  - **Hallucination control:** The system relies on prompt constraints and citations, but model behavior can still drift if context is weak.\n  - **Scale:** A README-first corpus is small and efficient, but very large project sets may require sharding or distributed indexing.\n  - **Context coverage:** README-only ingestion omits low-level implementation details that may matter for deeper technical review.",
+    "project": "Gemini Application Checker",
+    "section_title": "4. Engineering & Design Decisions",
+    "source": "README.md"
+  },
+  {
+    "text": "- **RAG literacy:** Clear separation of retrieval and generation, grounded responses, and citation enforcement.\n- **System architecture:** A modular pipeline that mirrors production RAG systems (ingest → embed → index → retrieve → generate).\n- **ML + software integration:** Practical use of embeddings, vector search, and prompt engineering to solve a real evaluation problem.",
+    "project": "Gemini Application Checker",
+    "section_title": "5. What This Project Demonstrates",
+    "source": "README.md"
+  },
+  {
+    "text": "gemini_application_checker\n└── README.md",
+    "project": "Gemini Application Checker",
+    "section_title": "Folder Structure",
+    "source": "folder_tree"
+  }
+]

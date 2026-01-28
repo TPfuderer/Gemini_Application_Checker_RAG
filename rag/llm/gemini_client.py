@@ -9,7 +9,8 @@ Design:
 
 import os
 from google import genai
-from rag.prompts import SYSTEM_PROMPT
+from rag.prompts import SYSTEM_PROMPT_ALL, SYSTEM_PROMPT_PROJECT
+
 
 
 def get_client():
@@ -32,16 +33,16 @@ PRIMARY_MODEL = "models/gemma-3-4b-it"
 FALLBACK_MODEL = "models/gemini-2.5-flash-lite"
 
 
-def generate_answer(client, context: str, question: str):
+def generate_answer(client, context: str, question: str, system_prompt: str):
     prompt = f"""
-{SYSTEM_PROMPT}
+    {system_prompt}
 
-Context:
-{context}
+    Context:
+    {context}
 
-Question:
-{question}
-"""
+    Question:
+    {question}
+    """
 
     try:
         response = client.models.generate_content(

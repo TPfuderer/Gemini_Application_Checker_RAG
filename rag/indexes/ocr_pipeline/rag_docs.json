@@ -1,0 +1,38 @@
+[
+  {
+    "text": "This project runs a two-stage computer vision pipeline to detect product regions in supermarket flyer PDFs and extract text from those regions.\nIt processes PDF pages rendered as images (intended for flyer-like layouts with product boxes and price text).\nThe pipeline outputs cropped product images, YOLO label files, and OCR text results from the crops.\nIt addresses the problem of turning unstructured promotional flyer imagery into machine-readable product-level text signals.\nThe current implementation is oriented around Tegut flyers and uses a single-page demo flow.",
+    "project": "OCR Pipeline",
+    "section_title": "1. Short Project Summary",
+    "source": "README.md"
+  },
+  {
+    "text": "**Input data characteristics:**\nThe main entry point expects a PDF file and renders pages to images using PyMuPDF (fitz).\nThe demo code processes only the first page of a PDF and assumes a consistent flyer layout.\n\n**Object detection with YOLO:**\nThe YOLO stage detects product regions on the rendered page image and writes label files plus visualized detection images.\nDetections are filtered by confidence, and each box is cropped into per-product images for downstream OCR.\n\n**OCR stage:**\nOCR runs on each detected crop using EasyOCR with a German/English character set.\nPreprocessing includes grayscale conversion, normalization, and light blurring to stabilize OCR on flyer textures.\nA small text cleanup pass normalizes common punctuation/character issues.\n\n**Post-processing and output:**\nOCR returns a structured dictionary of full text, line-level text, and confidence metrics.\nYOLO crops and labels are stored under per-run output directories, providing traceability from page → detection → crop → OCR.\n\n**Why YOLO precedes OCR:**\nThe design assumes text of interest is contained within product boxes; using YOLO first reduces background noise and constrains OCR to localized regions.\nThis approach relies on consistent layout where products and associated text are spatially co-located and detectable by the object detector.",
+    "project": "OCR Pipeline",
+    "section_title": "2. Technical Overview",
+    "source": "README.md"
+  },
+  {
+    "text": "```\n.\n├── src\n│   └── portfolio_base\n│       ├── app\n│       │   ├── app.py\n│       │   └── definitions.py\n│       ├── tegut_ocr\n│       │   ├── ocr_easy.py\n│       │   ├── yolo_detect.py\n│       │   └── paths.py\n│       ├── models\n│       │   └── tegut_yolo.pt\n│       └── data\n│           ├── input\n│           │   └── pdf_new\n│           │       └── *.pdf\n│           └── output\n│               └── runs\n│                   └── run_*/ \n│                       ├── pages\n│                       ├── yolo\n│                       └── crops\n├── requirements.txt\n└── runtime.txt\n```\n\n**Folder responsibilities and data flow**\n- **`.devcontainer/`**: Development container configuration used for local or cloud-based environments.\n- **`.idea/`**: IDE metadata (not part of the pipeline logic).\n- **`.venv/`**: Local Python virtual environment with third-party packages.\n- **`src/`**: Application source code and model/data assets.\n  - **`src/portfolio_base/app/`**: Streamlit UI and helper utilities; orchestrates the demo flow and exposes pipeline steps.\n  - **`src/portfolio_base/tegut_ocr/`**: Core computer vision + OCR logic (YOLO detection, OCR extraction, and path configuration).\n  - **`src/portfolio_base/models/`**: YOLO model weights used for detection.\n  - **`src/portfolio_base/data/`**: Input PDFs, output pages, YOLO labels, crops, and run artifacts.\n- **`requirements.txt`, `runtime.txt`**: Runtime and dependency metadata.\n\n**Data flow between folders**\n1. **Detection**: `src/portfolio_base/tegut_ocr/yolo_detect.py` reads PDFs and writes page images into `src/portfolio_base/data/output/.../pages`.\n2. **Cropping**: YOLO detections are saved under `src/portfolio_base/data/output/.../yolo`, and crops are written to `src/portfolio_base/data/output/.../crops/{raw,ocr}`.\n3. **OCR**: `src/portfolio_base/tegut_ocr/ocr_easy.py` consumes crops and returns structured OCR results used by the Streamlit app.\n4. **Postprocessing/Export**: `src/portfolio_base/app/definitions.py` includes helpers for masking, zipping, and MakeSense export/import of labels.\n\n**Where key logic lives**\n- **Computer vision logic**: `src/portfolio_base/tegut_ocr/yolo_detect.py` (PDF rendering, YOLO inference, crop extraction).\n- **OCR logic**: `src/portfolio_base/tegut_ocr/ocr_easy.py` (EasyOCR reader + preprocessing + cleanup).\n- **Data preprocessing**: `src/portfolio_base/tegut_ocr/ocr_easy.py` and `src/portfolio_base/app/definitions.py` (OCR masking and normalization helpers).\n- **Pipeline orchestration**: `src/portfolio_base/app/app.py` (Streamlit-based flow and UI-driven execution).\n- **Configuration/model weights**: `src/portfolio_base/tegut_ocr/paths.py` and `src/portfolio_base/models/tegut_yolo.pt`.",
+    "project": "OCR Pipeline",
+    "section_title": "3. Folder Structure (Core Section)",
+    "source": "README.md"
+  },
+  {
+    "text": "The project uses a two-stage pipeline (YOLO → OCR) to isolate product regions before text extraction.\nThis reduces OCR noise compared to full-page OCR and aligns with flyer layouts where text is typically embedded within product boxes.\nModularity is achieved by separating detection, OCR, and app orchestration into distinct modules and folders.\nThe pipeline can be extended by swapping YOLO weights, adding new detectors, or integrating alternative OCR engines.\n\n**Limitations and failure modes**\n- The demo processes only the first page of a PDF, which limits multi-page flyer coverage.\n- Detection quality depends on the Tegut-specific YOLO model and may degrade on other layouts or seasons.\n- OCR errors are likely for low-resolution images, heavy compression artifacts, or stylized fonts.\n- The pipeline assumes that product text is visually near or inside the detected product region; mismatches can yield incomplete OCR.",
+    "project": "OCR Pipeline",
+    "section_title": "4. Engineering & Design Decisions",
+    "source": "README.md"
+  },
+  {
+    "text": "This project demonstrates object detection and OCR integration in a multi-stage vision pipeline.\nIt shows practical handling of unstructured flyer imagery, conversion from PDFs to images, and structured text extraction from crops.\nThe codebase is relevant to roles focused on computer vision, OCR systems, ML model deployment, and end-to-end pipeline engineering.",
+    "project": "OCR Pipeline",
+    "section_title": "5. What This Project Demonstrates",
+    "source": "README.md"
+  },
+  {
+    "text": "ocr_pipeline_project\n└── README.md",
+    "project": "OCR Pipeline",
+    "section_title": "Folder Structure",
+    "source": "folder_tree"
+  }
+]
