@@ -15,6 +15,9 @@ from rag.retrieval.context import build_context
 from rag.llm.gemini_client import get_client, generate_answer
 from rag.prompts import SYSTEM_PROMPT_ALL, SYSTEM_PROMPT_PROJECT
 from config import PROJECTS as PROJECT_CONFIG
+from sentence_transformers import util
+from config import PROJECT_ROUTING
+
 
 
 # -------------------------------------------------
@@ -83,6 +86,11 @@ PROJECTS = {
     name: cfg["index_path"]
     for name, cfg in PROJECT_CONFIG.items()
 }
+
+# --- Safety check: routing completeness ---
+missing = set(PROJECTS) - set(PROJECT_ROUTING)
+if missing:
+    st.warning(f"Routing missing for projects: {sorted(missing)}")
 
 PROJECT_OPTIONS = ["All Projects"] + list(PROJECTS.keys())
 
@@ -178,19 +186,33 @@ if st.button("Ask question") and question:
             docs = []
 
             if project_name == "All Projects":
-                per_project_docs = []
+                # --- Stage 1: project routing ---
+                query_emb = embedder.encode(question, convert_to_tensor=True)
 
-                for project, index_dir in PROJECTS.items():
-                    retriever = Retriever(index_dir=index_dir, embedder=embedder)
-                    project_docs = retriever.retrieve(question, top_k=7)
+                project_scores = []
+                for project, desc in PROJECT_ROUTING.items():
+                    desc_emb = embedder.encode(desc, convert_to_tensor=True)
+                    score = util.cos_sim(query_emb, desc_emb).item()
+                    project_scores.append((project, score))
 
-                    # Tag docs with project name defensively
+                # Select top 3 most relevant projects
+                top_projects = [
+                    p for p, _ in sorted(project_scores, key=lambda x: x[1], reverse=True)[:3]
+                ]
+
+                # --- Stage 2: retrieve only from selected projects ---
+                docs = []
+                for project in top_projects:
+                    retriever = Retriever(
+                        index_dir=PROJECTS[project],
+                        embedder=embedder,
+                    )
+                    project_docs = retriever.retrieve(question, top_k=5)
+
                     for d in project_docs:
                         d["project"] = project
 
-                    per_project_docs.extend(project_docs)
-
-                docs = per_project_docs
+                    docs.extend(project_docs)
 
             else:
                 retriever = Retriever(

@@ -33,6 +33,51 @@ PROJECTS = {
     },
 }
 
+PROJECT_ROUTING = {
+    "ml_category_classifier": (
+        "classical machine learning, TF-IDF, logistic regression, NLP, "
+        "text classification, feature engineering, supervised learning, "
+        "model training, inference pipelines, reproducibility"
+    ),
+
+    "ocr_pipeline_project": (
+        "OCR, YOLO, EasyOCR, computer vision, PDF processing, "
+        "image pipelines, object detection, text extraction, "
+        "document understanding"
+    ),
+
+    "gemini_application_checker": (
+        "retrieval augmented generation, RAG, vector search, FAISS, "
+        "embeddings, semantic search, prompt engineering, "
+        "Gemini API, LLM integration, Streamlit deployment"
+    ),
+
+    "flyer_pipeline_v2": (
+        "end-to-end data pipeline, web scraping, OCR, machine learning, "
+        "data ingestion, data cleaning, orchestration, automation, "
+        "retail data, ETL pipelines"
+    ),
+
+    "product_show_app": (
+        "Streamlit app, data visualization, frontend, dashboards, "
+        "interactive applications, user interface, "
+        "data exploration"
+    ),
+
+    "active_recall_app": (
+        "database management, spaced repetition, active recall, "
+        "learning systems, backend logic, CRUD operations, "
+        "application state management"
+    ),
+
+    "candidate_profile": (
+        "academic background, university coursework, statistics, "
+        "data science education, research projects, work experience, "
+        "professional profile"
+    ),
+}
+
+
 
 
 # What to include / exclude during ingestion
