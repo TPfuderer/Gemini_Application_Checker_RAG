@@ -242,8 +242,14 @@ if st.button("Ask question") and question:
                 system_prompt=system_prompt,
             )
 
+            # Keep compatibility + newline fix
             answer_text = answer[0] if isinstance(answer, tuple) else answer
             st.markdown(answer_text.replace("\\n", "\n"))
+
+            # Model transparency (only if tuple)
+            if isinstance(answer, tuple) and len(answer) > 1:
+                st.caption(f"🧠 Model used: {answer[1]}")
+
 
         except Exception:
             st.error(
