@@ -152,12 +152,6 @@ question = st.text_area(
 )
 
 st.caption(
-    "Runs on Gemini free tier (limited context). "
-    "Paid tier enables larger context and more stable answers."
-)
-
-
-st.caption(
     "ℹ️ Free-tier Gemini usage is rate-limited. "
     "If the model is busy, retry after ~30–60 seconds."
 )
