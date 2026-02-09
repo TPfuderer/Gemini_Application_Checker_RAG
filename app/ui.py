@@ -121,10 +121,11 @@ if project_name == "All Projects":
 
     st.markdown(
         "**Sample questions:**\n"
-        "- Does Tristan have experience with [XYZ] technology?\n"
-        "- Which projects are relevant for [insert role] ?\n"
-        "- Does Tristan fit the following role [role] (based on project evidence only)?"
+        "- As an interviewer focused on [AREA], identify where Tristan demonstrates applied experience in this domain. Reference implementation projects and clarify whether the contribution reflects conceptual understanding, integration-level work, or original implementation.\n"
+        "- To verify hands-on experience with [TECH/SKILL], identify exact project where this appears. Specify whether the work reflects library usage, pipeline integration, or custom engineering.\n"
+        "- Does Tristan fit the following role [ROLE] (based strictly on documented project evidence)?"
     )
+
 
 else:
     st.info(f"Project mode: explains **{project_name}**.")
@@ -165,8 +166,6 @@ st.caption(
     "A paid tier would allow larger context windows and more stable responses "
     "across multiple complex queries."
 )
-
-
 
 # -------------------------------------------------
 # Core logic
